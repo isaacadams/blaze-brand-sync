@@ -4,7 +4,8 @@ this wordpress plugin syncs brands from blaze into the wordpress `product_brand`
 
 ### Debugging
 
-open the `public_html/wp-config.php` file in your wordpress environment and search for the following
+- debug logs get written to `public_html/wp-content/debug.log`
+- open the `public_html/wp-config.php` file in your wordpress environment and search for the following
 
 | name                                   | explanation                                                                                      |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------ |
