@@ -8,9 +8,9 @@ class ProductBrandTaxonomy {
 		$this->blaze_brand_id_key = 'blaze_id';
 	}
 
-	public function set_brand_to_product_post( string $blaze_product_id, string $blaze_brand_id ) {
+	public function set_brand_to_product_post( string $blaze_product_id, ?string $blaze_brand_id ) {
 		// some products do not have brands
-		if ( ! $blaze_brand_id ) {
+		if ( bb_is_string_empty( $blaze_brand_id ) ) {
 			return;
 		}
 
@@ -28,7 +28,8 @@ class ProductBrandTaxonomy {
 		$term = wp_insert_term( $name, $this->taxonomy_id );
 
 		if ( is_wp_error( $term ) ) {
-			throw new \Exception( "error when trying to add brand {$name} to {$this->taxonomy_id}: " . $term->get_error_message() );
+			bb_sync_write_log( "error when trying to add brand {$name} to {$this->taxonomy_id}: " . $term->get_error_message() );
+			return;
 		}
 
 		// add blaze id to term metadata
