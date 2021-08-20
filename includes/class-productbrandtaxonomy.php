@@ -8,9 +8,9 @@ class ProductBrandTaxonomy {
 		$this->blaze_brand_id_key = 'blaze_id';
 	}
 
-	public function set_brand_to_product_post( string $blaze_product_id, string $blaze_brand_id ) {
+	public function set_brand_to_product_post( string $blaze_product_id, ?string $blaze_brand_id ) {
 		// some products do not have brands
-		if ( ! $blaze_brand_id ) {
+		if ( bb_is_string_empty( $blaze_brand_id ) ) {
 			return;
 		}
 
