@@ -6,7 +6,7 @@ this wordpress plugin syncs brands from blaze into the wordpress `product_brand`
 
 to see that your cron job is scheduled and when it will next run
 
-- install & activate the `WP Control` plugin
+- install & activate the `WP Crontrol` plugin
 - then navigate to `Tools -> Cron Events`
 - search for your cron event: `blaze_brand_sync_load`
 
