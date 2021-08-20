@@ -11,6 +11,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+require_once 'includes/logging.php';
 require_once 'includes/class-brandsblazeclient.php';
 require_once 'includes/class-productbrandtaxonomy.php';
 
@@ -36,7 +37,8 @@ function sync_brands() {
 
 function load() {
 	if ( ! taxonomy_exists( 'product_brand' ) ) {
-		throw new \Exception( 'the taxonomy "product_brand" is required' );
+		bb_sync_write_log( 'the taxonomy "product_brand" is required' );
+		return;
 	}
 
 	// brands should be synced first
