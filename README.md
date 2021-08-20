@@ -2,6 +2,14 @@
 
 this wordpress plugin syncs brands from blaze into the wordpress `product_brand` taxonomy
 
+### Cron Job
+
+to see that your cron job is scheduled and when it will next run
+
+- install & activate the `WP Control` plugin
+- then navigate to `Tools -> Cron Events`
+- search for your cron event: `blaze_brand_sync_load`
+
 ### Debugging
 
 - debug logs get written to `public_html/wp-content/debug.log`
