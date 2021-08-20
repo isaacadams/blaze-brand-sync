@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Blaze Brand Sync
  * Description:       syncs brands to products from blaze
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Isaac Adams
  */
 
