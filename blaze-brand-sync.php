@@ -11,7 +11,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-require_once 'includes/logging.php';
+require_once 'includes/utilities.php';
 require_once 'includes/class-brandsblazeclient.php';
 require_once 'includes/class-productbrandtaxonomy.php';
 
