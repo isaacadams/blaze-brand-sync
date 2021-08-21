@@ -3,12 +3,15 @@ class ProductBrandTaxonomy {
 	private string $taxonomy_id;
 	private string $blaze_brand_id_key;
 
+	public array $synced_products_result;
+
 	public function __construct() {
-		$this->taxonomy_id        = 'product_brand';
-		$this->blaze_brand_id_key = 'blaze_id';
+		$this->taxonomy_id             = 'product_brand';
+		$this->blaze_brand_id_key      = 'blaze_id';
+		$this->$synced_products_result = array();
 	}
 
-	public function set_brand_to_product_post( string $blaze_product_id, ?string $blaze_brand_id ) {
+	public function set_brand_to_product_post( string $blaze_product_id, ?string $blaze_brand_id, $brand = null ) {
 		// some products do not have brands
 		if ( bb_is_string_empty( $blaze_brand_id ) ) {
 			return;
@@ -16,25 +19,39 @@ class ProductBrandTaxonomy {
 
 		$woo_product_id = $this->get_product_id_with_blaze_id( $blaze_product_id );
 		$term_brand     = $this->get_brand_with_blaze_id( $blaze_brand_id );
-		wp_set_post_terms( $woo_product_id, $term_brand->term_id, $this->taxonomy_id );
-	}
+		$id;
 
-	public function add_brand( $blaze_id, $name, string $image = '' ) {
-		if ( term_exists( $name, $this->taxonomy_id ) ) {
-			return;
+		if ( is_null( $term_brand ) ) {
+			//Logger::instance()->log( 'failed to find brand associated with ' . $blaze_brand_id );
+			//Logger::instance()->log( $brand );
+			$id = $this->add_brand( $blaze_brand_id, $brand->name );
+		} else {
+			$id = $term_brand->term_id;
 		}
 
-		// add a new brand
-		$term = wp_insert_term( $name, $this->taxonomy_id );
+		wp_set_post_terms( $woo_product_id, $id, $this->taxonomy_id );
+		array_push( $this->$synced_products_result, $woo_product_id );
+	}
+
+	public function add_brand( $blaze_id, $name, string $image = '' ): string {
+		$term = term_exists( $name, $this->taxonomy_id );
+
+		if ( ! $term ) {
+			// add a new brand
+			$term = wp_insert_term( $name, $this->taxonomy_id );
+			Logger::instance()->log( 'added new brand => ' . $name );
+		}
 
 		if ( is_wp_error( $term ) ) {
 			bb_sync_write_log( "error when trying to add brand {$name} to {$this->taxonomy_id}: " . $term->get_error_message() );
-			return;
+			return '';
 		}
 
-		// add blaze id to term metadata
+		// sync blaze id to term metadata
 		$id = $term['term_id'];
+		Logger::instance()->log( 'attempting to associate ' . $id . ' =>: ' . $blaze_id );
 		add_term_meta( $id, $this->blaze_brand_id_key, $blaze_id, true );
+		return $id;
 	}
 
 	public function get_product_id_with_blaze_id( $blaze_product_id ) {
