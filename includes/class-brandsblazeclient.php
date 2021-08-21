@@ -29,6 +29,10 @@ class BrandsBlazeClient {
 			)
 		);
 
+		if ( is_wp_error( $response ) ) {
+			Logger::instance()->log( '---error when requesting ' . $endpoint . '---' . "\n" . $response . "\n" . '---end---' );
+		}
+
 		$body = json_decode( wp_remote_retrieve_body( $response ) );
 		return $body;
 	}

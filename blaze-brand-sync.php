@@ -11,6 +11,9 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+define( 'BLAZE_BRAND_SYNC_HOME', dirname( __FILE__ ) . '/' );
+
+require_once 'includes/class-logger.php';
 require_once 'includes/utilities.php';
 require_once 'includes/class-brandsblazeclient.php';
 require_once 'includes/class-productbrandtaxonomy.php';
@@ -36,6 +39,8 @@ function sync_brands() {
 }
 
 function load() {
+	Logger::instance()->initial_log();
+
 	if ( ! taxonomy_exists( 'product_brand' ) ) {
 		bb_sync_write_log( 'the taxonomy "product_brand" is required' );
 		return;
