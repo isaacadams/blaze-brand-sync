@@ -12,9 +12,13 @@ class Logger {
 		}
 	}
 
-	public function log( string $log ) {
+	public function log( $log ) {
 		if ( false === WP_DEBUG ) {
 			return;
+		}
+
+		if ( is_null( $log ) ) {
+			$log = 'null';
 		}
 
 		if ( is_array( $log ) || is_object( $log ) ) {
