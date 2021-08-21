@@ -24,8 +24,15 @@ function sync_products_brands() {
 	$products        = $blaze_client->get_all_products();
 
 	foreach ( $products as $k => $blaze_product ) {
-		$brands_taxonomy->set_brand_to_product_post( $blaze_product->id, $blaze_product->brandId );
+		$brands_taxonomy->set_brand_to_product_post( $blaze_product->id, $blaze_product->brandId, $blaze_product->brand );
 	}
+
+	/* Logger::instance()->log(
+		'---results---' .
+		"\n" . '# of products from Blaze: ' . count( $products ) .
+		"\n" . '# of products synced: ' . count( $brands_taxonomy->synced_products_result ) .
+		"\n" . '---end---'
+	); */
 }
 
 function sync_brands() {
